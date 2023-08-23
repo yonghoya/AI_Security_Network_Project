@@ -3,9 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>AI 보안 프로젝트</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f2f2f2;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+    </style>
 </head>
 <body>
-    <h1> 출력 화면 </h1>
-    <p> 입력한 키워드 : {{ keyword }} </p>
+    <div class="container">
+
+        <div class="text-center">
+            <h1 class="mb-4">제목 (미정)</h1>
+        </div>
+
+        <h2>Keyword 검색결과</h2>
+
+        <p><strong>Keyword:</strong> {{ keyword }}</p>
+
+        <div class="result">
+            <p><strong> 결과: </strong> </p>
+            <p><strong> URL 타입: </strong> </p>
+        </div>
+
+    </div>
 </body>
 </html>
