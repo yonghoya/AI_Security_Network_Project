@@ -27,6 +27,12 @@
             border-radius: 5px;
             max-width: 800px;
         }
+        .title {
+            margin-bottom: 20px;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -34,21 +40,35 @@
         <h1>URL 분석 결과</h1>
     </header>
     <div class="container">
-        <h2>URL 정보</h2>
-        <table class="table">
-            <tr>
-                <th>URL</th>
-                <td>url</td>
-            </tr>
-            <tr>
-                <th>분석 결과</th>
-                <td>analysis_result</td>
-            </tr>
-            <tr>
-                <th>URL 타입</th>
-                <td>url_type</td>
-            </tr>
-        </table>
+        <h2 class="title">URL 정보</h2>
+
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                URL
+            </div>
+            <div class="card-body">
+                {{ keyword }}
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                분석 결과
+            </div>
+            <div class="card-body">
+                분석 결과
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                URL 타입
+            </div>
+            <div class="card-body">
+                URL 타입
+            </div>
+        </div>
+
     </div>
 </body>
 </html>
