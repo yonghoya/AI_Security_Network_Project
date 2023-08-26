@@ -9,5 +9,8 @@ def index(request):
         return render(request, 'main/input.html')
 
 def output(request, keyword):
+    if request.method == 'POST':
+        return redirect('index')
+
     context = {'keyword': keyword}
     return render(request, 'main/output.html', context)

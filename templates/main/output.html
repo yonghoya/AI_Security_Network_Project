@@ -41,6 +41,9 @@
             padding-top: 50px;
             padding-bottom: 40px;
         }
+        .custom-btn {
+            border-width: 2px;
+        }
     </style>
 </head>
 <body>
@@ -48,7 +51,7 @@
         <h1>Phishing Box</h1>
     </header>
     <div class="container">
-        <h2 class="title">URL 정보</h2>
+        <h2 class="title"><strong>URL 정보</strong></h2>
 
         <div class="card">
             <div class="card-header bg-primary text-white">
@@ -76,8 +79,14 @@
                 URL 타입
             </div>
         </div>
-
+        <form method="post">
+            {% csrf_token %}
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-outline-primary custom-btn">Back to Input</button>
+            </div>
+        </form>
     </div>
+
 
     <footer class="container-fluid bg-4 text-center">
         <p>Phishing Box Made By <a href="https://github.com/yonghoya/AI_Security_Network_Project.git">GitHub</a></p>
