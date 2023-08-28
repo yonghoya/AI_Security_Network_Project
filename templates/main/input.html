@@ -2,14 +2,85 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AI 보안 프로젝트</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel='stylesheet' href="style.css">
+
+    <style>
+        body {
+          font: 20px Montserrat, sans-serif;
+          line-height: 1.8;
+          color: #f5f6f7;
+        }
+        p {font-size: 16px;}
+        .margin {margin-bottom: 45px;}
+    
+        .bg-1 { 
+          background-color: #474e5d; 
+          color: #ffffff;
+        }
+        .bg-2 { 
+          background-color: #ffffff; 
+          color: #555555;
+        }
+        .bg-3 { 
+          background-color: #2f2f2f; 
+          color: #fff;
+        }
+        .container-fluid {
+          padding-top: 70px;
+          padding-bottom: 70px;
+        }
+        .navbar {
+          padding-top: 15px;
+          padding-bottom: 15px;
+          border: 0;
+          border-radius: 0;
+          margin-bottom: 0;
+          font-size: 12px;
+          letter-spacing: 5px;
+        }
+        .navbar-nav  li a:hover {
+          color: #1abc9c !important;
+        }
+        </style>
+    
 </head>
-<body>
-    <h1>키워드 입력 폼</h1>
-    <form id="keywordForm" method="get">
-        <label for="keyword"> 키워드를 입력하시오 : </label>
-        <input type="text" id="keyword" name="keyword">
-        <button type="submit"> 검색 </button>
-    </form>
+
+
+<body class="bg-3">
+
+        <div class="container mt-2 py-5 text-center justify-content-center">
+            <h1 class="fw-bold">Phishing Box</h1>
+            <img src="phishing_box.png" class="img-fluid img-responsive img-circle" style="display:inline" alt="phishing_box" width="600" height="350">
+        </div>
+      </nav>
+
+
+
+    <div class="container-fluid bg-1 text-center">
+        <h3 class="text-center justify-content-center">URL?</h3>
+        <p class="m-3">URL이 위험한지 안전한지 URL을 입력하여 검색하세요.</p>
+
+        <form action="file:///C:/Users/serim/Downloads/AI_Security_Network_Project-master/AI_Security_Network_Project-master/templates/main/output.html" class="row g-4 w-75 m-auto justify-content-center" method="get">
+            <div class="col-12">
+                <div class="form-floating">
+                  <input type="text" class="form-control rounded-4" id="keyword" placeholder="URL" aria-label="URL" aria-describedby="submit-button">
+                  <label for="keyword">URL</label>
+                  <button type="submit" class="btn btn-outline-secondary btn-warning mt-4" id="submit-button">Search</button>
+                </div>
+            </div>
+    
+        </form>
+      </div>
+
+   
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+    <footer class="container-fluid bg-3 text-center">
+        <p>AI_Security_Network_Phishing_Box</p> 
+      </footer>
+      
 </body>
 </html>
