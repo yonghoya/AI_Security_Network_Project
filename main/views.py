@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect
 
 def index(request):
     if request.method == 'POST':
-        keyword = request.POST.get('keyword')
-        if keyword:
-            return redirect('output', keyword=keyword)
+        input_string = request.POST.get('input_string')
+        if input_string:
+            return redirect('output', keyword=input_string)
     return render(request, 'main/input.html')
     
 def output(request, keyword):
