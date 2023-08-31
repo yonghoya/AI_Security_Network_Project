@@ -40,7 +40,9 @@ def get_ip(input_string):
         return ip_address
 
     def get_country(ip_address):
-        response = requests.get(f"https://ipapi.co/{ip_address}/country_name/").text
+        url = f"https://ipapi.co/{ip_address}/country_name/"
+        headers = {'User-Agent': 'Mozilla/5.0'}
+        response = requests.get(url, headers=headers).text
         return response.strip()  # Remove leading/trailing whitespace
 
     domain = input_string
