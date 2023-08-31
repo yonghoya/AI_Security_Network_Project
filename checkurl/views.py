@@ -13,8 +13,9 @@ def index(request):
 def checkurl_main(request):
     if request.method == 'POST':
         url_string = request.POST.get('input_string', '')
-        context = information(url_string)
-        return render(request, 'checkurl/output.html', context)
+        if url_string:
+            context = information(url_string)
+            return render(request, 'checkurl/output.html', context)
 
     return render(request, 'checkurl/input.html')
 
