@@ -1,13 +1,12 @@
 from django.shortcuts import render, redirect
 
 def index(request):
-    keyword = request.GET.get('keyword')
-
-    if keyword:
-        return redirect('output', keyword=keyword)
-    else:
-        return render(request, 'main/input.html')
-
+    if request.method == 'POST':
+        input_string = request.POST.get('input_string')
+        if input_string:
+            return redirect('output', keyword=input_string)
+    return render(request, 'main/input.html')
+    
 def output(request, keyword):
     if request.method == 'POST':
         return redirect('index')
