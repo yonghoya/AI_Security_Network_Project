@@ -35,6 +35,8 @@ def AI(input_string):
 
 
 
+
+
 def get_ip(input_string):
     def get_ip_address(domain):
         ip_address = socket.gethostbyname(domain)
@@ -43,14 +45,25 @@ def get_ip(input_string):
     def get_country(ip_address):
         url = f"https://ipapi.co/{ip_address}/country_name/"
         headers = {'User-Agent': 'Mozilla/5.0'}
-        response = requests.get(url, headers=headers).text
-        return response.strip()  # Remove leading/trailing whitespace
+        try:
+            response = requests.get(url, headers=headers)
+            response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
+            return response.text.strip()  # Remove leading/trailing whitespace
+        except requests.exceptions.RequestException as e:
+            print(f"An error occurred: {e}")
+            return None
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            return None
 
     domain = input_string
 
-    ip_address = get_ip_address(domain)
-    country = get_country(ip_address)
-
+    try:
+        ip_address = get_ip_address(domain)
+        country = get_country(ip_address)
+    except socket.gaierror as e:
+        print(f"An error occurred: {e}")
+        return None
 
     return ip_address, country
 
