@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 import socket
 import requests
+from .models import URLManager
 
 
 
@@ -23,8 +24,9 @@ def checkurl_main(request):
 def information(input_string):
     AI_output, url_type = AI(input_string)
     ip, country = get_ip(input_string)
+    type_explanation = url_manager_view(url_type)
 
-    context = {'url': input_string, 'AI_output': AI_output, 'url_type': url_type, 'ip': ip, 'country': country}
+    context = {'url': input_string, 'AI_output': AI_output, 'url_type': url_type, 'type_explanation': type_explanation, 'ip': ip, 'country': country}
     return context
 
 
@@ -66,6 +68,18 @@ def get_ip(input_string):
         return None
 
     return ip_address, country
+
+
+
+
+def url_manager_view(type):
+    url_manager_data = URLManager.objects.filter(url_type=type)
+    type_explanation = ""
+    if url_manager_data:
+        type_explanation = url_manager_data[0].type_explanation
+
+    return type_explanation
+
 
 
 
