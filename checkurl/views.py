@@ -3,14 +3,11 @@ from django.http import HttpResponse
 from django.shortcuts import render
 import socket
 import requests
-from checkurl.models import URLManager
-from checkurl.models import url_judge
 
 
 
 def index(request):
     return HttpResponse("안녕하세요  test에 오신것을 환영합니다.")
-
 
 
 def checkurl_main(request):
@@ -26,38 +23,15 @@ def checkurl_main(request):
 def information(input_string):
     AI_output, url_type = AI(input_string)
     ip, country = get_ip(input_string)
-    type_explanation = url_manager_view(url_type)
-    insert_db(AI_output, url_type, input_string, ip, country)
 
-    context = {'url': input_string, 'AI_output': AI_output, 'url_type': url_type, 'type_explanation': type_explanation, 'ip': ip, 'country': country}
+    context = {'url': input_string, 'AI_output': AI_output, 'url_type': url_type, 'ip': ip, 'country': country}
     return context
 
 
+def AI(input_string):
+    ##코드 추가 필요
+    return 1, "Phishing" ##test를 위한 하드코딩. 향후 삭제
 
-
-def AI(url):
-    try:
-        data = {"url": url}
-        response = requests.post("http://3.34.52.88:8000/predict", json=data) ##유동ip
-        response.raise_for_status()  # Raise an exception if the request fails
-        result = response.json()
-        malicious_result = False
-        type_result = result['predict_result']
-        if type_result != "benign":
-            malicious_result = True
-        return malicious_result, type_result
-    except requests.exceptions.RequestException as e:
-        print(f"Request Exception: {e}")
-        return 0, "Error",
-
-
-def insert_db(AI_output, url_type, input_string, ip, country):
-    try:
-        new_test_entry = url_judge(AI_output, url_type, input_string, ip, country)
-        new_test_entry.save()
-        print("데이터가 저장되었습니다.")
-    except Exception as e:
-        print(f"Database Exception: {e}")
 
 
 
@@ -92,20 +66,6 @@ def get_ip(input_string):
         return None
 
     return ip_address, country
-
-
-
-
-def url_manager_view(type):
-    type_upper = type.capitalize()
-    url_manager_data = URLManager.objects.filter(url_type=type_upper)
-    type_explanation = ""
-    if url_manager_data:
-        type_explanation = url_manager_data[0].type_explanation
-        print(type_explanation)
-
-    return type_explanation
-
 
 
 
