@@ -11,17 +11,17 @@ def scan_DB(url, return_queue):
     django.setup()
     from checkurl.models import url_judge
 
-    same = False
-    type = ""
+    malicious = False
+    type = "Null"
     for obj in url_judge.objects.all():
         if obj.url == url:
-            same = True
+            malicious = obj.prediction_result
             type = obj.pri_url
             break
 
     ##white list scan 루틴 추가 필요
 
-    result = (same, type)
+    result = (malicious, type)
     return_queue.put(result)
     return 0
 
