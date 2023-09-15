@@ -36,16 +36,16 @@ def scan_DB(url, return_queue):
     return 0
 
 
-
+"""
 def AI(url, return_queue):  ##테스트용 AI함수
     time.sleep(5)
     result = (False, "phishing")
     return_queue.put(result)
     return 0
-
-
-
 """
+
+
+
 def AI(url, return_queue):
     try:
         data = {"url": url}
@@ -62,4 +62,3 @@ def AI(url, return_queue):
     except requests.exceptions.RequestException as e:
         print(f"Request Exception: {e}")
         return 0, "Error",
-"""
