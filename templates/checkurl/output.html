@@ -80,6 +80,10 @@
             margin: 0;
             padding: 0;
         }
+        .custom-popover img {
+            max-width: 200px;
+            max-height: 200px;
+        }
     </style>
 </head>
 <body>
@@ -223,7 +227,8 @@
                     data-bs-toggle="popover" data-bs-placement="right"
                     data-bs-custom-class="custom-popover"
                     data-bs-title="{{ country }}"
-                    data-bs-content="이미지">
+                        data-bs-html="true"
+                    data-bs-content='<img src="{{ country_img }}" alt="{{ country }}" style="max-width: 50px; max-height: 50px;">'>
                     Click to view image
                 </button>
             </div>
