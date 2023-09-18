@@ -104,7 +104,7 @@
                 &nbsp; <strong>URL</strong>
             </div>
             <div class="card-body">
-                {{ keyword }}
+                {{ url }}
             </div>
         </div>
 
@@ -120,7 +120,7 @@
                 &nbsp; <strong>분석 결과</strong>
             </div>
             <div class="card-body">
-                분석 결과
+                {{ AI_output }}
             </div>
         </div>
 
@@ -133,7 +133,7 @@
                 &nbsp; <strong>타입</strong>
             </div>
             <div class="card-body d-flex justify-content-between align-items-center">
-                <div>타입 내용</div>
+                <div>{{ url_type }}</div>
                 <button type="button" class="btn btn-outline-warning custom-btn"
                     data-bs-toggle="popover" data-bs-placement="right"
                     data-bs-custom-class="custom-popover"
@@ -151,7 +151,7 @@
                 &nbsp; <strong>IP 주소</strong>
             </div>
             <div class="card-body">
-                IP
+                {{ ip }}
             </div>
         </div>
         <div class="card">
@@ -162,7 +162,7 @@
                 &nbsp; <strong>국가 (추정)</strong>
             </div>
             <div class="card-body d-flex justify-content-between align-items-center">
-                <div>국가</div>
+                <div>{{ country }}</div>
                 <button type="button" class="btn btn-outline-warning custom-btn"
                     data-bs-toggle="popover" data-bs-placement="right"
                     data-bs-custom-class="custom-popover"
