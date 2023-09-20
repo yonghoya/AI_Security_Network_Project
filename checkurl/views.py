@@ -9,6 +9,8 @@ import csv
 from checkurl import multi
 from checkurl.models import url_judge
 from checkurl.models import URLManager
+
+from django.utils.safestring import mark_safe
 from checkurl.models import white_list
 
 
@@ -61,11 +63,12 @@ def information(input_string):
     AI_output, url_type = multi_processing(input_string)
     print(AI_output)
     print(url_type)
-    ip, country = get_ip(input_string)
+    ip, country, country_img = get_ip(input_string)
+    print(country_img)
     type_explanation = url_manager_view(url_type)
     insert_db(AI_output, url_type, input_string, ip, country)
 
-    context = {'url': input_string, 'AI_output': AI_output, 'url_type': url_type, 'type_explanation': type_explanation, 'ip': ip, 'country': country}
+    context = {'url': input_string, 'AI_output': AI_output, 'url_type': url_type, 'type_explanation': type_explanation, 'ip': ip, 'country': country, 'country_img': mark_safe(country_img)}
     ## url : 클라이언트가 입력한 url(str), AI_output : 악성여부(bool), url_type : AI가 판단한 해당 url의 타입(str), type_explanation : 해당 type에 대한 설명(str), ip(str), country : 국가명(str)
     return context
 
@@ -110,9 +113,6 @@ def insert_db(AI_output, url_type, input_string, ip, country):
         print(f"Database Exception: {e}")
 
 
-
-
-
 def get_ip(input_string):
     def get_ip_address(domain):
         ip_address = socket.gethostbyname(domain)
@@ -132,16 +132,38 @@ def get_ip(input_string):
             print(f"An unexpected error occurred: {e}")
             return None
 
+    def get_country_image_url(country_name):
+        base_url = "https://restcountries.com/v3.1/name/"
+        url = f"{base_url}{country_name}"
+
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            data = response.json()[0]  # Assuming the first result is the correct one
+            flag_url = data["flags"]["png"]
+
+            # Append query parameters to the image URL to resize it
+            resized_flag_url = f"{flag_url}?width=50&height=50"  # You can adjust width and height as needed
+
+            return resized_flag_url
+        except requests.exceptions.RequestException as e:
+            print(f"An error occurred while fetching country image: {e}")
+            return None
+        except (IndexError, KeyError) as e:
+            print(f"Country data format error: {e}")
+            return None
+
     domain = input_string
 
     try:
         ip_address = get_ip_address(domain)
         country = get_country(ip_address)
+        country_image_url = get_country_image_url(country)
     except socket.gaierror as e:
         print(f"An error occurred: {e}")
         return None
 
-    return ip_address, country
+    return ip_address, country, country_image_url
 
 
 
