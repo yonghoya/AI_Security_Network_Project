@@ -63,6 +63,9 @@ def checkurl_main(request):
 
 
 def information(input_string):
+    pattern = r"(https?://)"
+    input_string = re.sub(pattern, "", input_string) ##https:// or http:// 제거
+
     AI_output, url_type = multi_processing(input_string)
     print(AI_output)
     print(url_type)
@@ -185,9 +188,6 @@ def url_check_endpoint(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         url_to_check = data.get('url')
-
-        pattern = r"(https?://)"
-        url_to_check = re.sub(pattern, "", url_to_check) ##https:// or http:// 제거
 
         # 여기에서 URL 확인 로직을 수행하고 결과를 result 변수에 할당
         result = information(url_to_check)
