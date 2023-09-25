@@ -1,10 +1,13 @@
 
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.http import JsonResponse
+import json
 import socket
 import requests
 import multiprocessing
 import csv
+import re
 
 from checkurl import multi
 from checkurl.models import url_judge
@@ -60,6 +63,9 @@ def checkurl_main(request):
 
 
 def information(input_string):
+    pattern = r"(https?://)"
+    input_string = re.sub(pattern, "", input_string) ##https:// or http:// 제거
+
     AI_output, url_type = multi_processing(input_string)
     print(AI_output)
     print(url_type)
@@ -178,6 +184,16 @@ def url_manager_view(type):
     return type_explanation
 
 
+def url_check_endpoint(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        url_to_check = data.get('url')
 
+        # 여기에서 URL 확인 로직을 수행하고 결과를 result 변수에 할당
+        result = information(url_to_check)
+        type = result['url_type']
+
+        # 결과를 JSON 응답으로 반환
+        return JsonResponse({'predict_result': type})
 
 
