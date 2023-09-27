@@ -1,84 +1,158 @@
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Phishing Box</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <title>Your Page Title</title>
+    <!-- 부트스트랩 CSS 링크 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- 부트스트랩 스크립트 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     {% load static %}
-
     <style>
+        /* 전체 페이지 스타일 */
         body {
-          font: 20px Montserrat, sans-serif;
-          line-height: 1.8;
-          color: #f5f6f7;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
         }
-        .margin {margin-bottom: 45px;}
 
-        .bg-1 { 
-          background-color: #474e5d; 
-          color: #ffffff;
+        .container-fluid {
+            margin-right: auto;
+            margin-left: auto;
         }
-        .bg-2 { 
-          background-color: #ffffff; 
-          color: #555555;
-        }
-        .bg-3 { 
-          background-color: #2f2f2f; 
-          color: #fff;
-        }
-        .container-fluid { 
-          padding-top: 50px; 
-          padding-bottom: 40px; 
-        }
-        .navbar {
-          padding-top: 15px;
-          padding-bottom: 15px;
-          border: 0;
-          border-radius: 0;
-          margin-bottom: 0;
-          font-size: 12px;
-          letter-spacing: 5px;
-        }
-        .navbar-nav  li a:hover {
-          color: #1abc9c !important;
-        }
-        </style>
 
+        /* 7쪽 스타일 */
+        .left-side {
+            background-color: #090E0E;
+            color: #fff;
+            padding: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* 왼쪽 정렬 */
+            justify-content: center;
+            height: 100vh; /* 화면 높이에 맞게 설정 */
+        }
+
+        /* 3쪽 스타일 */
+        .right-side {
+            background-color: #474E5D; /* 배경 색상 변경 */
+            padding: 20px;
+            text-align: center;
+            height: 100vh; /* 화면 높이에 맞게 설정 */
+            display: flex;
+            justify-content: center;
+            align-items: center; /* 가운데 정렬 */
+        }
+
+        /* 제목 스타일 */
+        h1 {
+            font-size: 55px;
+            margin-bottom: 10px;
+        }
+
+        /* 설명 스타일 */
+        p {
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+
+        /* URL 입력창 스타일 */
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* 버튼 스타일 */
+        button {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        /* 원 스타일 */
+        .circle {
+            width: 300px;
+            height: 300px;
+            background-color: white;
+            border-radius: 50%; /* 원 모양으로 만듭니다. */
+            border: 7px solid #000; /* 테두리 스타일 추가 (검정색, 두껍게) */
+            display: flex;
+            justify-content: center;
+            align-items: center; /* 이미지를 가운데로 정렬 */
+            /* 이미지 나타나는 애니메이션 */
+            animation-name: fadeInUp;
+            animation-duration: 2s;
+        }
+        .social-icons .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            height: 4rem;
+            width: 4rem;
+            border-radius: 100rem;
+        }
+        /* 이미지 "fadeInUp" 애니메이션 */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(100px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* 커스텀 입력 창 스타일 */
+        .custom-input {
+            width: 600px !important;/* 원하는 길이로 설정 */
+            border-radius: 10px;
+        }
+
+
+    </style>
 </head>
-
-
-<body class="bg-3">
-
-        <div class="container mt-2 py-5 text-center justify-content-center">
-            <h1 class="fw-bold">Phishing Box</h1>
-            <img src="{% static 'phishing_box.png' %}" class="img-fluid img-responsive img-circle" style="display:inline" alt="phishing_box" width="600" height="350">
+<body>
+    <div class="container-fluid"> <!-- 여기에 px-0 클래스 추가 -->
+        <div class="row">
+            <div class="col-lg-8 left-side">
+                <h1 class="fst-italic lh-1 mb-4" style="font-family: math; font-weight: 700;">Phishing Box</h1>
+                <p>악성 URL을 분류하는 모델을 기반으로, 입력한 URL의 정보를 확인 할 수 있는 웹사이트 입니다. 아래 URL을 입력하세요!</p>
+                <form id="keywordForm"  method="post">
+                    {% csrf_token %}
+                    <input type="text" placeholder="Enter URL" class="custom-input" id="input_string" name="input_string">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+                </div>
+            <div class="col-lg-4 right-side d-flex flex-column justify-content-center align-items-center">
+                <!-- 원 추가 -->
+                <div class="circle mb-3">
+                    <img src="{% static 'phishing_box.png' %}" alt="Phishing Box Image" width="100%" height="auto">
+                </div>
+                <!-- 동그라미 버튼 -->
+                <div class="social-icons" id="social-icon" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="Made By Github" style="position: absolute; bottom: 10px; right: 10px;">
+                    <a class="btn btn-light m-3" href="https://github.com/yonghoya/AI_Security_Network_Project.git"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
         </div>
-      </nav>
-
-
-
-    <div class="container-fluid bg-1 text-center">
-        <h3 class="text-center justify-content-center">URL?</h3>
-        <p class="m-3">URL이 위험한지 안전한지 URL을 입력하여 검색하세요.</p>
-
-        <form id="keywordForm" class="row g-4 w-75 m-auto justify-content-center" method="post"> 
-            {% csrf_token %}
-            <div class="col-12"> 
-                <div> 
-		<input type="text" class="form-control" id="input_string" placeholder="URL" name="input_string"> 
-                <button type="submit" class="btn btn-outline-secondary btn-warning mt-4"> Search </button> 
-                </div> 
-            </div> 
-        </form>
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-
-    <footer class="container-fluid bg-3 text-center">
-        <p>Phishing Box Made By <a href="https://github.com/yonghoya/AI_Security_Network_Project.git">GitHub</a></p> 
-    </footer>
-
+    <!-- 부트스트랩 스크립트 링크 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 페이지가 로드될 때 팝오버를 활성화합니다.
+        $(document).ready(function () {
+            $('#social-icon').popover();
+        });
+    </script>
 
 </body>
 </html>
