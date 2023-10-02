@@ -65,6 +65,7 @@ def checkurl_main(request):
 def information(input_string):
     pattern = r"(https?://)"
     input_string = re.sub(pattern, "", input_string) ##https:// or http:// 제거
+    input_string = input_string.rstrip("/") ## 마지막의 / 제거
 
     AI_output, url_type = multi_processing(input_string)
     print(AI_output)
@@ -184,16 +185,30 @@ def url_manager_view(type):
     return type_explanation
 
 
+
+from django.views.decorators.csrf import csrf_exempt  # If CSRF protection is not needed
+@csrf_exempt  # Remove this if CSRF protection is not needed for this view
 def url_check_endpoint(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
-        url_to_check = data.get('url')
+        try:
+            data = json.loads(request.body)
+            url_to_check = data.get('url')
 
-        # 여기에서 URL 확인 로직을 수행하고 결과를 result 변수에 할당
-        result = information(url_to_check)
-        type = result['url_type']
 
-        # 결과를 JSON 응답으로 반환
-        return JsonResponse({'predict_result': type})
+            # Check if 'url' key is missing in the JSON data
+            if url_to_check is None:
+                return JsonResponse({'error': 'Missing "url" key in JSON data'}, status=400)
+
+            # Assuming 'information' is a function that can raise exceptions
+            try:
+                AI_output, url_type = multi_processing(url_to_check)
+                return JsonResponse({'predict_result': url_type})
+            except Exception as e:
+                return JsonResponse({'error1': str(e)}, status=500)
+
+        except json.JSONDecodeError as e:
+            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
 
 
