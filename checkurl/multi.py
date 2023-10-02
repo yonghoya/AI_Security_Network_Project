@@ -22,6 +22,8 @@ def scan_DB(url, return_queue):
         if white_obj.url == url or white_obj.url == url.lstrip("www."):
             malicious = False
             type = "benign"
+            result = (malicious, type)
+            return_queue.put(result)
             break
 
     ## 검색기록 scan
@@ -49,7 +51,7 @@ def AI(url, return_queue):  ##테스트용 AI함수
 def AI(url, return_queue):
     try:
         data = {"url": url}
-        response = requests.post("http://3.34.52.88:8000/predict", json=data) ##유동ip
+        response = requests.post("http://3.36.66.96:8000/predict", json=data) ##유동ip
         response.raise_for_status()  # Raise an exception if the request fails
         result = response.json()
         malicious_result = False
