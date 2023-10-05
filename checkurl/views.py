@@ -123,8 +123,11 @@ def insert_db(AI_output, url_type, input_string, ip, country):
 def get_ip(input_string):
     print(input_string)
     def get_ip_address(domain):
-        ip_address = socket.gethostbyname(domain)
-        return ip_address
+        try:
+            ip_address = socket.gethostbyname(domain)
+            return ip_address
+        except socket.gaierror:
+            return None
 
     def get_country(ip_address):
         url = f"https://ipapi.co/{ip_address}/country_name/"
