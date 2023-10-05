@@ -163,9 +163,9 @@ def get_ip(input_string):
 
     domain = input_string
         if not urlparse(domain).scheme:
-        url = "http://" + domain
+        domain = "http://" + domain
 
-    parsed_url = urlparse(url)
+    parsed_url = urlparse(domain)
     host = parsed_url.netloc
 
 
