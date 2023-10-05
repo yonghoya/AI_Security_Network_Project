@@ -162,8 +162,11 @@ def get_ip(input_string):
             return None
 
     domain = input_string
-    parsed_url = urlparse(domain)
-    host = parsed_url.netloc ##input_string에서 host만 추출
+        if not urlparse(domain).scheme:
+        url = "http://" + domain
+
+    parsed_url = urlparse(url)
+    host = parsed_url.netloc
 
 
     try:
