@@ -10,7 +10,7 @@
       // 폼 제출 시 입력값 길이 확인 함수
       function checkInputLength() {
           var inputString = document.getElementById("input_string").value;
-          if (inputString.length > 63) {
+          if (inputString.length > 500) {
               alert("입력값이 63자 이상입니다. 63자 이하로 입력하세요.");
               return false; // 폼 제출을 중단합니다.
           }
