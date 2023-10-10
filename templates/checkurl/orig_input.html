@@ -1,0 +1,95 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Phishing Box</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    {% load static %}
+	
+    <script>
+      // 폼 제출 시 입력값 길이 확인 함수
+      function checkInputLength() {
+          var inputString = document.getElementById("input_string").value;
+          if (inputString.length > 500) {
+              alert("입력값이 63자 이상입니다. 63자 이하로 입력하세요.");
+              return false; // 폼 제출을 중단합니다.
+          }
+          return true; // 폼을 제출합니다.
+      }
+    </script>
+    <style>
+        body {
+          font: 20px Montserrat, sans-serif;
+          line-height: 1.8;
+          color: #f5f6f7;
+        }
+        .margin {margin-bottom: 45px;}
+
+        .bg-1 { 
+          background-color: #474e5d; 
+          color: #ffffff;
+        }
+        .bg-2 { 
+          background-color: #ffffff; 
+          color: #555555;
+        }
+        .bg-3 { 
+          background-color: #2f2f2f; 
+          color: #fff;
+        }
+        .container-fluid { 
+          padding-top: 50px; 
+          padding-bottom: 40px; 
+        }
+        .navbar {
+          padding-top: 15px;
+          padding-bottom: 15px;
+          border: 0;
+          border-radius: 0;
+          margin-bottom: 0;
+          font-size: 12px;
+          letter-spacing: 5px;
+        }
+        .navbar-nav  li a:hover {
+          color: #1abc9c !important;
+        }
+        </style>
+
+</head>
+
+
+<body class="bg-3">
+
+        <div class="container mt-2 py-5 text-center justify-content-center">
+            <h1 class="fw-bold">Phishing Box</h1>
+            <img src="{% static 'phishing_box.png' %}" class="img-fluid img-responsive img-circle" style="display:inline" alt="phishing_box" width="600" height="350">
+        </div>
+      </nav>
+
+
+
+    <div class="container-fluid bg-1 text-center">
+        <h3 class="text-center justify-content-center">URL?</h3>
+        <p class="m-3">URL이 위험한지 안전한지 URL을 입력하여 검색하세요.</p>
+
+        <form id="keywordForm" class="row g-4 w-75 m-auto justify-content-center" method="post" onsubmit = "return checkInputLength()"> 
+            {% csrf_token %}
+            <div class="col-12"> 
+                <div> 
+		<input type="text" class="form-control" id="input_string" placeholder="URL" name="input_string"> 
+                <button type="submit" class="btn btn-outline-secondary btn-warning mt-4"> Search </button> 
+                </div> 
+            </div> 
+        </form>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+    <footer class="container-fluid bg-3 text-center">
+        <p>Phishing Box Made By <a href="https://github.com/yonghoya/AI_Security_Network_Project.git">GitHub</a></p> 
+    </footer>
+
+
+</body>
+</html>

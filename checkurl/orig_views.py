@@ -12,7 +12,7 @@ from checkurl.models import URLManager
 from checkurl.models import white_list
 from django.utils.safestring import mark_safe
 from django.views.decorators.csrf import csrf_exempt
-from urllib.parse import urlparse
+
 @csrf_exempt 
 def checkurl_main(request):
     if request.method == 'POST':
@@ -105,65 +105,52 @@ def insert_db(AI_output, url_type, input_string, ip, country):
         raise Exception(f"An error occurred while inserting data to the database: {str(e)}")
 
 def get_ip(input_string):
-    print(input_string)
-    def get_ip_address(domain):
-        try:
-            ip_address = socket.gethostbyname(domain)
-            return ip_address
-        except socket.gaierror:
-            return None
-
-    def get_country(ip_address):
-        url = f"https://ipapi.co/{ip_address}/country_name/"
-        headers = {'User-Agent': 'Mozilla/5.0'}
-        try:
-            response = requests.get(url, headers=headers)
-            response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
-            return response.text.strip()  # Remove leading/trailing whitespace
-        except requests.exceptions.RequestException as e:
-            print(f"An error occurred: {e}")
-            return None
-        except Exception as e:
-            print(f"An unexpected error occurred: {e}")
-            return None
-
-    def get_country_image_url(country_name):
-        base_url = "https://restcountries.com/v3.1/name/"
-        url = f"{base_url}{country_name}"
-
-        try:
-            response = requests.get(url)
-            response.raise_for_status()
-            data = response.json()[0]  # Assuming the first result is the correct one
-            flag_url = data["flags"]["png"]
-
-            # Append query parameters to the image URL to resize it
-            resized_flag_url = f"{flag_url}?width=50&height=50"  # You can adjust width and height as needed
-
-            return resized_flag_url
-        except requests.exceptions.RequestException as e:
-            print(f"An error occurred while fetching country image: {e}")
-            return None
-        except (IndexError, KeyError) as e:
-            print(f"Country data format error: {e}")
-            return None
-
-    domain = input_string
-    if not urlparse(domain).scheme:
-        domain = "http://" + domain
-         
-    parsed_url = urlparse(domain)
-    host = parsed_url.netloc
-
     try:
-        ip_address = get_ip_address(host)
-        country = get_country(ip_address)
-        country_image_url = get_country_image_url(country)
-    except socket.gaierror as e:
-        print(f"An error occurred: {e}")
-        return None
+        def get_ip_address(domain):
+            try:
+                ip_address = socket.gethostbyname(domain)
+                return ip_address
+            except socket.gaierror as e:
+                raise Exception(f"An error occurred while resolving the host: {str(e)}")
 
-    return ip_address, country, country_image_url
+        def get_country(ip_address):
+            try:
+                url = f"https://ipapi.co/{ip_address}/country_name/"
+                headers = {'User-Agent': 'Mozilla/5.0'}
+                response = requests.get(url, headers=headers)
+                response.raise_for_status()
+                return response.text.strip()
+            except requests.exceptions.RequestException as e:
+                raise Exception(f"An error occurred while fetching country information: {str(e)}")
+            except Exception as e:
+                raise Exception(f"An unexpected error occurred: {str(e)}")
+
+        def get_country_image_url(country_name):
+            try:
+                base_url = "https://restcountries.com/v3.1/name/"
+                url = f"{base_url}{country_name}"
+                response = requests.get(url)
+                response.raise_for_status()
+                data = response.json()[0]
+                flag_url = data["flags"]["png"]
+                resized_flag_url = f"{flag_url}?width=50&height=50"
+                return resized_flag_url
+            except requests.exceptions.RequestException as e:
+                raise Exception(f"An error occurred while fetching country image: {str(e)}")
+            except (IndexError, KeyError) as e:
+                raise Exception(f"Country data format error: {str(e)}")
+
+        domain = input_string
+        ip_address = get_ip_address(domain)
+        if ip_address is None:
+            return None, None
+        country = get_country(ip_address)
+        if country is None:
+            return ip_address, None
+        country_image_url = get_country_image_url(country)
+        return ip_address, country, country_image_url
+    except Exception as e:
+        raise Exception(f"An error occurred in get_ip: {str(e)}")
 
 def url_manager_view(type):
     try:
