@@ -2,6 +2,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.http import JsonResponse
+from urllib.parse import urlparse
 import json
 import socket
 import requests
@@ -64,9 +65,9 @@ def checkurl_main(request):
 
 def information(input_string):
     pattern = r"(https?://)"
-    input_string = re.sub(pattern, "", input_string) ##https:// or http:// 제거
+    removed_input_string = re.sub(pattern, "", input_string) ##https:// or http:// 제거
 
-    AI_output, url_type = multi_processing(input_string)
+    AI_output, url_type = multi_processing(removed_input_string)
     print(AI_output)
     print(url_type)
     ip, country, country_img = get_ip(input_string)
@@ -120,9 +121,13 @@ def insert_db(AI_output, url_type, input_string, ip, country):
 
 
 def get_ip(input_string):
+    print(input_string)
     def get_ip_address(domain):
-        ip_address = socket.gethostbyname(domain)
-        return ip_address
+        try:
+            ip_address = socket.gethostbyname(domain)
+            return ip_address
+        except socket.gaierror:
+            return None
 
     def get_country(ip_address):
         url = f"https://ipapi.co/{ip_address}/country_name/"
@@ -160,9 +165,15 @@ def get_ip(input_string):
             return None
 
     domain = input_string
+        if not urlparse(domain).scheme:
+        domain = "http://" + domain
+
+    parsed_url = urlparse(domain)
+    host = parsed_url.netloc
+
 
     try:
-        ip_address = get_ip_address(domain)
+        ip_address = get_ip_address(host)
         country = get_country(ip_address)
         country_image_url = get_country_image_url(country)
     except socket.gaierror as e:
@@ -184,16 +195,31 @@ def url_manager_view(type):
     return type_explanation
 
 
+
+from django.views.decorators.csrf import csrf_exempt  # If CSRF protection is not needed
+@csrf_exempt  # Remove this if CSRF protection is not needed for this view
 def url_check_endpoint(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
-        url_to_check = data.get('url')
+        try:
+            data = json.loads(request.body)
+            url_to_check = data.get('url')
 
-        # 여기에서 URL 확인 로직을 수행하고 결과를 result 변수에 할당
-        result = information(url_to_check)
-        type = result['url_type']
 
-        # 결과를 JSON 응답으로 반환
-        return JsonResponse({'predict_result': type})
+            # Check if 'url' key is missing in the JSON data
+            if url_to_check is None:
+                return JsonResponse({'error': 'Missing "url" key in JSON data'}, status=400)
+
+            # Assuming 'information' is a function that can raise exceptions
+            try:
+                AI_output, url_type = multi_processing(url_to_check)
+                return JsonResponse({'predict_result': url_type})
+            except Exception as e:
+                return JsonResponse({'error1': str(e)}, status=500)
+
+        except json.JSONDecodeError as e:
+            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
+
 
 
